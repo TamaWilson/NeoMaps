@@ -45,3 +45,17 @@ $RECYCLE.BIN/
 Network Trash Folder
 Temporary Items
 .apdisk
+.idea/inspectionProfiles/profiles_settings.xml
+.idea/workspace.xml
+.idea/NeoMaps.iml
+.idea/modules.xml
+.idea/misc.xml
+.idea/inspectionProfiles/Project_Default.xml
+paths/__pycache__/importer.cpython-35.pyc
+paths/__pycache__/models.cpython-35.pyc
+paths/__pycache__/urls.cpython-35.pyc
+paths/__pycache__/utilpaths.cpython-35.pyc
+paths/__pycache__/views.cpython-35.pyc
+paths/__pycache__/__init__.cpython-35.pyc
+paths/migrations/__pycache__/__init__.cpython-35.pyc
+*.pyc

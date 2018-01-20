@@ -1,0 +1,66 @@
+{% load static %}
+{% load leaflet_tags %}
+<html>
+<head>
+	<title>NeoMaps</title>
+
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+
+{% leaflet_js %}
+	{% leaflet_css %}
+
+<style>
+
+    .leaflet-container {  /* all maps */
+        width:  1200px;
+        height: 700px;
+    }
+
+    #specialbigmap {
+        height: 800px;
+    }
+
+</style>
+
+</head>
+<body>
+	<div class="Container">
+	<h1>NeoMaps</h1>
+<hr/>
+ {% leaflet_map "mapid" callback="main_map_init" %}
+
+		Start : {{ start }} <br>
+		End : {{ end }}<br>
+		Weight: {{  meta }} <br>
+
+
+		<script>
+		function main_map_init (map, options) {
+
+
+            map.setView([-2.53214, -44.29627], 13);
+
+            L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                maxZoom: 22,
+            }).addTo(map);
+
+            var polylinePoints = [	{{ polyline | safe }} ];
+
+			 var polylineOptions = {
+               color: 'blue',
+               weight: 6,
+               opacity: 0.9
+             };
+
+
+			 var polyline = new L.Polyline(polylinePoints, polylineOptions);
+            map.addLayer(polyline);
+
+             // zoom the map to the polyline
+               map.fitBounds(polyline.getBounds());
+
+			}
+
+		</script>
+</body>
+</html>

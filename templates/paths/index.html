@@ -1,0 +1,109 @@
+{% load leaflet_tags %}
+<html>
+<head>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+	{% leaflet_js %}
+	{% leaflet_css %}
+
+
+	<style>
+
+    .leaflet-container {  /* all maps */
+        width:  1200px;
+        height: 700px;
+    }
+
+    #specialbigmap {
+        height: 800px;
+    }
+
+</style>
+
+
+</head>
+<body>
+<h1>NeoMaps</h1>
+{% leaflet_map "mapid" callback="main_map_init" %}
+<form method='POST' id ='routing' action={% url 'voyage:results'  %} >
+	{% csrf_token %}
+	<input type='hidden' id='start' name="startpoint" value=""/>
+	<input type='hidden' id='end' name="endpoint" value=""/>
+	<input type='submit' value='Calcular rota'/>
+</form>
+<script type="text/javascript">
+
+    var startpoint = null;
+    var endpoint = null;
+    function main_map_init (map, options) {
+
+        console.log(map);
+        map.setView([-2.53214, -44.29627]);
+        L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
+
+
+        map.on('click', function(e) {
+            var container = L.DomUtil.create('div'),
+                startBtn = createButton('Estou aqui!', container),
+                destBtn = createButton('Quero chegar aqui!', container);
+
+
+            L.popup()
+                .setContent(container)
+                .setLatLng(e.latlng)
+                .openOn(map);
+
+            L.DomEvent.on(startBtn, 'click', function() {
+
+                if(startpoint != null) {
+                    map.removeLayer(startpoint);
+                    startpoint = new L.Marker(e.latlng);
+                    map.addLayer(startpoint);
+                    updatePoint(e.latlng, 'start');
+
+                } else {
+                    startpoint = new L.Marker(e.latlng)
+                    map.addLayer(startpoint)
+                    updatePoint(e.latlng, 'start');
+                }
+                map.closePopup();
+            });
+
+            L.DomEvent.on(destBtn, 'click', function() {
+                if(endpoint != null) {
+                    map.removeLayer(endpoint)
+                    endpoint = new L.Marker(e.latlng)
+                    map.addLayer(endpoint)
+                    updatePoint(e.latlng, 'end');
+
+                } else {
+                    endpoint = new L.Marker(e.latlng)
+                    map.addLayer(endpoint)
+                    updatePoint(e.latlng, 'end');
+                }
+                map.closePopup();
+            });
+
+        });
+
+
+    }
+
+    function createButton(label, container) {
+        var btn = L.DomUtil.create('button', '', container);
+        btn.setAttribute('type', 'button');
+        btn.innerHTML = label;
+        return btn;
+
+    }
+
+    function updatePoint(point, type) {
+        console.log(point)
+        $('#' + type).val(point);
+    }
+
+
+
+
+</script>
+</body>
+</html>
