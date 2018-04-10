@@ -4,63 +4,113 @@
 <head>
 	<title>NeoMaps</title>
 
-		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-{% leaflet_js %}
+	<link rel="stylesheet" href="{%  static "css/bootstrap.min.css" %}">
+	<script src="{% static "js/jquery.min.js" %}"></script>
+	<script src="{% static "js/bootstrap.min.js" %}"></script>
+
+	{% leaflet_js %}
 	{% leaflet_css %}
+	<script src="{% static "js/leaflet.hotline.js" %}"></script>
+	<style>
 
-<style>
+		.leaflet-container {  /* all maps */
+			width:  1200px;
+			height: 700px;
+		}
 
-    .leaflet-container {  /* all maps */
-        width:  1200px;
-        height: 700px;
-    }
+		#specialbigmap {
+			height: 800px;
+		}
 
-    #specialbigmap {
-        height: 800px;
-    }
-
-</style>
+	</style>
 
 </head>
 <body>
-	<div class="Container">
-	<h1>NeoMaps</h1>
-<hr/>
- {% leaflet_map "mapid" callback="main_map_init" %}
+<div class="container-fluid">
+	<div class="row">
+		<div class="col-md-9">
+			<h1>NeoMaps</h1>
+		</div>
+		<div class="col-md-3"><h1>
+			<img src="{%  static "images/python-powered-w-200x80.png" %}" style="width:100px"/>
+			<img src="{%  static "images/django_logo.png" %}" style="width:100px"/>
+			<img src="{%  static "images/neo4j_logo.png" %}" style="width:100px"/>
+		</h1>
+		</div>
+	</div>
+	<hr/>
 
-		Start : {{ start }} <br>
-		End : {{ end }}<br>
-		Weight: {{  meta }} <br>
+	<div class="row">
+		<div class="col-md-9">
+			{% leaflet_map "mapid" callback="main_map_init" %}
+		</div>
+		<div class="col-md-3">
+			<h2>Distância: {{ meta }} </h2>
+		</div>
+	</div>
+
+	<script>
+        function main_map_init (map, options) {
 
 
-		<script>
-		function main_map_init (map, options) {
+            map.setView([-2.53214, -44.29627]);
+			map.setMaxBounds([[-2.35658930805591, -43.810043334960945],[-2.829888161145772, -44.68826293945313]])
+            L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
 
+            var coords = [ {{ polyline | safe }} ];
 
-            map.setView([-2.53214, -44.29627], 13);
-
-            L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                maxZoom: 22,
+            var hotlineLayer = L.hotline(coords, {
+                min: 0,
+                max: {{ maxGrade | safe }},
+                palette: {
+                    0.0: '#008800',
+                    0.5: '#ffff00',
+                    1.0: '#ff0000'
+                },
+                weight: 5,
+                outlineColor: '#000000',
+                outlineWidth: 1,
             }).addTo(map);
+            map.fitBounds(hotlineLayer.getBounds(), {maxZoom: 18});
 
-            var polylinePoints = [	{{ polyline | safe }} ];
+              var startIcon = L.icon({
+                iconUrl: "{%  static "images/marker-icon-green.png" %}",
+                iconRetinaUrl: "{% static "images/marker-icon-2x-green.png" %}",
+                shadowUrl: "/static/leaflet/images/marker-shadow.png",
+                iconSize: [25, 41],
+                iconAnchor: [12, 41],
+                popupAnchor: [1, -34],
+                tooltipAnchor: [16, -28],
+                shadowSize: [41, 41]
+            });
 
-			 var polylineOptions = {
-               color: 'blue',
-               weight: 6,
-               opacity: 0.9
-             };
+
+            var endIcon = L.icon({
+                iconUrl: "{%  static "images/marker-icon-red.png" %}",
+                iconRetinaUrl: "{% static "images/marker-icon-2x-red.png" %}",
+                shadowUrl: "/static/leaflet/images/marker-shadow.png",
+                iconSize: [25, 41],
+                iconAnchor: [12, 41],
+                popupAnchor: [1, -34],
+                tooltipAnchor: [16, -28],
+                shadowSize: [41, 41]
+            });
+
+            startpoint = new L.Marker({{ start }}, {icon: startIcon});
+            map.addLayer(startpoint);
+
+            endpoint = new L.Marker({{ end }}, {icon: endIcon});
+            map.addLayer(endpoint);
 
 
-			 var polyline = new L.Polyline(polylinePoints, polylineOptions);
-            map.addLayer(polyline);
 
-             // zoom the map to the polyline
-               map.fitBounds(polyline.getBounds());
 
-			}
+        }
 
-		</script>
+
+	</script>
 </body>
 </html>

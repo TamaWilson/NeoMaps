@@ -70,6 +70,7 @@ TEMPLATES = [
     },
 ]
 
+
 WSGI_APPLICATION = 'NeoMaps.wsgi.application'
 
 
@@ -119,10 +120,10 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-STATIC_ROOT = os.path.join(BASE_DIR, 'statics')
+STATIC_ROOT = os.path.join(BASE_DIR, '../static')
 
 STATICFILES_DIRS = (
-                os.path.join(BASE_DIR,'static'), # if your static files folder is named "staticfiles"
+               os.path.join(BASE_DIR,'static'), # if your static files folder is named "staticfiles"
 )
 
 #config.DATABASE_URL = 'bolt://neo4j:neo4@localhost:7687'  # default
@@ -133,5 +134,4 @@ LEAFLET_CONFIG = {
     'RESET_VIEW': False,
     'DEFAULT_ZOOM': 15,
     'MIN_ZOOM': 11,
-
 }

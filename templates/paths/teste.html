@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>aaaaa</title>
+</head>
+<body>
+{% load leaflet_tags %}
+{% load static %}
+<html>
+<head>
+	<title>NeoMaps</title>
+
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+	<link rel="stylesheet" href="{%  static "css/bootstrap.min.css" %}">
+	<script src="{% static "js/jquery.min.js" %}"></script>
+	<script src="{% static "js/bootstrap.min.js" %}"></script>
+
+
+	<link rel="stylesheet" href="{% static "css/leaflet.zoomdisplay.css" %}">
+	{% leaflet_js %}
+	{% leaflet_css %}
+	<script src="{% static "js/leaflet.hotline.js" %}"></script>
+	<script src="{% static "js/leaflet.zoomdisplay.js" %}"></script>
+	<style>
+
+		.leaflet-container {  /* all maps */
+			width:  950px;
+			height: 700px;
+		}
+
+		#specialbigmap {
+			height: 800px;
+		}
+
+	</style>
+
+</head>
+<body>
+<div class="container-fluid">
+	<div class="row">
+		<div class="col-md-9">
+			<h1>NeoMaps</h1>
+		</div>
+		<div class="col-md-3"><h1>
+			<img src="{%  static "images/python-powered-w-200x80.png" %}" style="width:100px"/>
+			<img src="{%  static "images/django_logo.png" %}" style="width:100px"/>
+			<img src="{%  static "images/neo4j_logo.png" %}" style="width:100px"/>
+		</h1>
+		</div>
+	</div>
+	<hr/>
+
+	<div class="row">
+		<div class="col-md-7">
+			{% leaflet_map "mapid" callback="main_map_init" %}
+		</div>
+		<div class="col-md-5">
+			<div class="row">
+				<div class="col-md-7">
+					<h2>Distância: 12Km{{ meta }} </h2>
+				</div>
+				<div class="col-md-5" s>
+					<a  class="btn btn-primary" href="/" role="button">Nova Consulta</a>
+				</div>
+			</div>
+				<div class="row">
+					<iframe src="https://docs.google.com/forms/d/e/1FAIpQLSdg30ssvqZsODPx0g3tce_eCyvBoUUYZgMwePAoNnFU3HWOqQ/viewform?embedded=true" width="100%" height="650" frameborder="0" marginheight="0" marginwidth="0">Carregando…</iframe>
+				</div>
+			</div>
+		</div>
+
+		<script>
+
+
+            function main_map_init (map, options) {
+
+                var coords = [[-2.53342,-44.28391,10],[-2.5335509,-44.28449,12],]
+
+
+                var startIcon = L.icon({
+                    iconUrl: "{%  static "images/marker-icon-green.png" %}",
+                    iconRetinaUrl: "{% static "images/marker-icon-2x-green.png" %}",
+                    shadowUrl: "/static/leaflet/images/marker-shadow.png",
+                    iconSize: [25, 41],
+                    iconAnchor: [12, 41],
+                    popupAnchor: [1, -34],
+                    tooltipAnchor: [16, -28],
+                    shadowSize: [41, 41]
+                });
+
+
+                var endIcon = L.icon({
+                    iconUrl: "{%  static "images/marker-icon-red.png" %}",
+                    iconRetinaUrl: "{% static "images/marker-icon-2x-red.png" %}",
+                    shadowUrl: "/static/leaflet/images/marker-shadow.png",
+                    iconSize: [25, 41],
+                    iconAnchor: [12, 41],
+                    popupAnchor: [1, -34],
+                    tooltipAnchor: [16, -28],
+                    shadowSize: [41, 41]
+                });
+
+                startpoint = new L.Marker({{ start }}, {icon: startIcon});
+                map.addLayer(startpoint);
+
+                endpoint = new L.Marker({{ end }}, {icon: endIcon});
+                map.addLayer(endpoint);
+
+                map.setView([-2.53214, -44.29627], 13);
+                map.setMaxBounds([[-2.35658930805591, -43.810043334960945],[-2.829888161145772, -44.68826293945313]])
+                L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
+
+                var hotlineLayer = L.hotline(coords, {
+                    min: 0,
+                    max: 15,
+                    palette: {
+                        0.0: '#008800',
+                        0.5: '#ffff00',
+                        1.0: '#ff0000'
+                    },
+                    weight: 5,
+                    outlineColor: '#000000',
+                    outlineWidth: 1,
+                }).addTo(map);
+                map.fitBounds(hotlineLayer.getBounds(), { maxZoom: 18 });
+            }
+
+		</script>
+</body>
+</html>
