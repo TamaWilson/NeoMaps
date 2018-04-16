@@ -126,8 +126,8 @@ STATICFILES_DIRS = (
                os.path.join(BASE_DIR,'static'), # if your static files folder is named "staticfiles"
 )
 
-#config.DATABASE_URL = 'bolt://neo4j:neo4@localhost:7687'  # default
-config.DATABASE_URL = 'bolt://neo4j:rashion@localhost:7687'  # default
+config.DATABASE_URL = 'bolt://neo4j:neo4@localhost:7687'  # default
+
 config.ENCRYPTED_CONNECTION = False
 
 LEAFLET_CONFIG = {

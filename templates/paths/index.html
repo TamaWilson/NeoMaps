@@ -2,7 +2,9 @@
 {% load static %}
 <html>
 <head>
-
+  <link rel="shortcut icon" type="image/png"
+          href="{% static 'images/favicon.png' %}"/>
+	<title>NeoMaps</title>
 	<meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
@@ -34,12 +36,12 @@
 
 </head>
 <body>
-<div class="container-fluid">
+<div class="container-fluid" style="margin-top: 10px">
 	<div class="row">
-		 <div class="col-md-9">
-	<h1>NeoMaps</h1>
+		 <div class="col-md-7 col-sm-7">
+	<img src="{%  static "images/neomaps.png" %}" style="width:300px"/>
 		 </div>
-		<div class="col-md-3"><h1>
+		<div class="col-md-5 col-sm-5" style="text-align: right;"><h1>
 			<img src="{%  static "images/python-powered-w-200x80.png" %}" style="width:100px"/>
 			<img src="{%  static "images/django_logo.png" %}" style="width:100px"/>
 			<img src="{%  static "images/neo4j_logo.png" %}" style="width:100px"/>
@@ -67,12 +69,26 @@
 				{% csrf_token %}
 				<input type='hidden' id='start' name="startpoint" value=""/>
 				<input type='hidden' id='end' name="endpoint" value=""/>
-				<input class="btn btn-primary btn-lg" type='submit' value='Calcular rota'/>
+				<input class="btn btn-primary btn-lg rotas"  type='submit' value='Calcular rota'/>
 			</form>
 			<div style="text-align: center; color: red; font-weight: bold;">{{ ex }}</div>
 		</div>
 	</div>
 </div>
+
+<div class="modal fade" id="loadmodal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle">Consulta em andamento</h5>
+      </div>
+      <div class="modal-body">
+        Aguarde você será redirecionado <img src="{%  static "images/loads.gif" %}" style="width:100px"/>
+      </div>
+    </div>
+  </div>
+</div>
+
 <script type="text/javascript">
 
     var startpoint = null;
@@ -172,6 +188,11 @@
         $('#' + type).val(point);
     }
 
+	document.getElementsByClassName("rotas")[0].addEventListener("click", capture);
+function capture()  {
+    $('#loadmodal').modal('show').
+    document.getElementById("routing").submit();
+}
 
 </script>
 </body>

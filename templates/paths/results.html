@@ -2,6 +2,9 @@
 {% load leaflet_tags %}
 <html>
 <head>
+
+  <link rel="shortcut icon" type="image/png"
+          href="{% static 'images/favicon.png' %}"/>
 	<title>NeoMaps</title>
 
 	<meta charset="utf-8">
@@ -17,8 +20,8 @@
 	<style>
 
 		.leaflet-container {  /* all maps */
-			width:  1200px;
-			height: 700px;
+			width:  100%;
+			height: 100%;
 		}
 
 		#specialbigmap {
@@ -29,12 +32,12 @@
 
 </head>
 <body>
-<div class="container-fluid">
+<div class="container-fluid" style="margin-top: 10px">
 	<div class="row">
-		<div class="col-md-9">
-			<h1>NeoMaps</h1>
-		</div>
-		<div class="col-md-3"><h1>
+		 <div class="col-md-7 col-sm-7">
+	<img src="{%  static "images/neomaps.png" %}" style="width:300px"/>
+		 </div>
+		<div class="col-md-5 col-sm-5" style="text-align: right;"><h1>
 			<img src="{%  static "images/python-powered-w-200x80.png" %}" style="width:100px"/>
 			<img src="{%  static "images/django_logo.png" %}" style="width:100px"/>
 			<img src="{%  static "images/neo4j_logo.png" %}" style="width:100px"/>
@@ -44,11 +47,18 @@
 	<hr/>
 
 	<div class="row">
-		<div class="col-md-9">
+		<div class="col-md-7">
 			{% leaflet_map "mapid" callback="main_map_init" %}
 		</div>
-		<div class="col-md-3">
-			<h2>Distância: {{ meta }} </h2>
+		<div class="col-md-5">
+			<div class="row">
+				<div class="col-md-7">
+					<h2>Distância: {{ meta }} </h2>
+				</div>
+				<div class="col-md-5" s>
+					<a  class="btn btn-primary" href="/" role="button">Nova Consulta</a>
+				</div>
+			</div>
 		</div>
 	</div>
 

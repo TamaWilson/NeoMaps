@@ -9,6 +9,8 @@
 {% load static %}
 <html>
 <head>
+	  <link rel="shortcut icon" type="image/png"
+          href="{% static 'images/favicon.png' %}"/>
 	<title>NeoMaps</title>
 
 	<meta charset="utf-8">
@@ -27,8 +29,8 @@
 	<style>
 
 		.leaflet-container {  /* all maps */
-			width:  950px;
-			height: 700px;
+			width:  100%;
+			height: 650px;
 		}
 
 		#specialbigmap {
@@ -39,12 +41,12 @@
 
 </head>
 <body>
-<div class="container-fluid">
+<div class="container-fluid" style="margin-top: 10px">
 	<div class="row">
-		<div class="col-md-9">
-			<h1>NeoMaps</h1>
-		</div>
-		<div class="col-md-3"><h1>
+		 <div class="col-md-7 col-sm-7">
+	<img src="{%  static "images/neomaps.png" %}" style="width:300px"/>
+		 </div>
+		<div class="col-md-5 col-sm-5" style="text-align: right;"><h1>
 			<img src="{%  static "images/python-powered-w-200x80.png" %}" style="width:100px"/>
 			<img src="{%  static "images/django_logo.png" %}" style="width:100px"/>
 			<img src="{%  static "images/neo4j_logo.png" %}" style="width:100px"/>
@@ -67,7 +69,7 @@
 				</div>
 			</div>
 				<div class="row">
-					<iframe src="https://docs.google.com/forms/d/e/1FAIpQLSdg30ssvqZsODPx0g3tce_eCyvBoUUYZgMwePAoNnFU3HWOqQ/viewform?embedded=true" width="100%" height="650" frameborder="0" marginheight="0" marginwidth="0">Carregando…</iframe>
+					<iframe src="https://docs.google.com/forms/d/e/1FAIpQLSdg30ssvqZsODPx0g3tce_eCyvBoUUYZgMwePAoNnFU3HWOqQ/viewform?embedded=true" width="100%" height="600px" frameborder="0" marginheight="0" marginwidth="0">Carregando…</iframe>
 				</div>
 			</div>
 		</div>

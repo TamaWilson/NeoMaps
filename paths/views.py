@@ -54,6 +54,9 @@ def results(request):
 
         max, meta = db.cypher_query(query)
 
+        if max[0][0] < 10:
+            max[0][0] = 10
+
         hotline = '[{0},{1},0],'.format(start[0],start[1])
 
         for node in nodes:

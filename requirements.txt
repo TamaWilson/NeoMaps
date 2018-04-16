@@ -1,0 +1,6 @@
+neomodel==3.2.5
+Django==2.0.3
+beautifulsoup4==4.6.0
+osmread==0.2
+py2neo==4.0.0b9
+vincenty==0.1.4
