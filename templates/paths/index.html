@@ -2,15 +2,15 @@
 {% load static %}
 <html>
 <head>
-  <link rel="shortcut icon" type="image/png"
-          href="{% static 'images/favicon.png' %}"/>
+	<link rel="shortcut icon" type="image/png"
+	      href="{% static 'images/favicon.png' %}"/>
 	<title>NeoMaps</title>
 	<meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
 	<link rel="stylesheet" href="{%  static "css/bootstrap.min.css" %}">
 	<script src="{% static "js/jquery.min.js" %}"></script>
-	 <script src="{% static "js/bootstrap.min.js" %}"></script>
+	<script src="{% static "js/bootstrap.min.js" %}"></script>
 
 	{% leaflet_js %}
 	{% leaflet_css %}
@@ -38,9 +38,9 @@
 <body>
 <div class="container-fluid" style="margin-top: 10px">
 	<div class="row">
-		 <div class="col-md-7 col-sm-7">
-	<img src="{%  static "images/neomaps.png" %}" style="width:300px"/>
-		 </div>
+		<div class="col-md-7 col-sm-7">
+			<img src="{%  static "images/neomaps.png" %}" style="width:300px"/>
+		</div>
 		<div class="col-md-5 col-sm-5" style="text-align: right;"><h1>
 			<img src="{%  static "images/python-powered-w-200x80.png" %}" style="width:100px"/>
 			<img src="{%  static "images/django_logo.png" %}" style="width:100px"/>
@@ -77,26 +77,26 @@
 </div>
 
 <div class="modal fade" id="loadmodal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true" data-backdrop="static" data-keyboard="false">
-  <div class="modal-dialog modal-dialog-centered" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLongTitle">Consulta em andamento</h5>
-      </div>
-      <div class="modal-body">
-        Aguarde você será redirecionado <img src="{%  static "images/loads.gif" %}" style="width:100px"/>
-      </div>
-    </div>
-  </div>
+	<div class="modal-dialog modal-dialog-centered" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="exampleModalLongTitle">Consulta em andamento</h5>
+			</div>
+			<div class="modal-body">
+				Aguarde você será redirecionado <img src="{%  static "images/loads.gif" %}" style="width:100px"/>
+			</div>
+		</div>
+	</div>
 </div>
 
 <script type="text/javascript">
 
     var startpoint = null;
     var endpoint = null;
-	var teste = null
+    var teste = null
     function main_map_init(map, options) {
 
-       // console.log(map);
+        // console.log(map);
         map.setView([-2.53214, -44.29627]);
         map.setMaxBounds([[-2.35658930805591, -43.810043334960945],[-2.829888161145772, -44.68826293945313]])
         L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
@@ -170,7 +170,7 @@
             });
 
         });
-		teste = map
+        teste = map
 
     }
 
@@ -188,11 +188,11 @@
         $('#' + type).val(point);
     }
 
-	document.getElementsByClassName("rotas")[0].addEventListener("click", capture);
-function capture()  {
-    $('#loadmodal').modal('show').
-    document.getElementById("routing").submit();
-}
+    document.getElementsByClassName("rotas")[0].addEventListener("click", capture);
+    function capture()  {
+        $('#loadmodal').modal('show').
+        document.getElementById("routing").submit();
+    }
 
 </script>
 </body>

@@ -1,16 +1,10 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-	<meta charset="UTF-8">
-	<title>aaaaa</title>
-</head>
-<body>
 {% load leaflet_tags %}
 {% load static %}
+<!DOCTYPE html>
 <html>
 <head>
-	  <link rel="shortcut icon" type="image/png"
-          href="{% static 'images/favicon.png' %}"/>
+	<link rel="shortcut icon" type="image/png"
+	      href="{% static 'images/favicon.png' %}"/>
 	<title>NeoMaps</title>
 
 	<meta charset="utf-8">
@@ -30,7 +24,7 @@
 
 		.leaflet-container {  /* all maps */
 			width:  100%;
-			height: 650px;
+			height: 100%;
 		}
 
 		#specialbigmap {
@@ -43,9 +37,9 @@
 <body>
 <div class="container-fluid" style="margin-top: 10px">
 	<div class="row">
-		 <div class="col-md-7 col-sm-7">
-	<img src="{%  static "images/neomaps.png" %}" style="width:300px"/>
-		 </div>
+		<div class="col-md-7 col-sm-7">
+			<img src="{%  static "images/neomaps.png" %}" style="width:300px"/>
+		</div>
 		<div class="col-md-5 col-sm-5" style="text-align: right;"><h1>
 			<img src="{%  static "images/python-powered-w-200x80.png" %}" style="width:100px"/>
 			<img src="{%  static "images/django_logo.png" %}" style="width:100px"/>
@@ -68,68 +62,68 @@
 					<a  class="btn btn-primary" href="/" role="button">Nova Consulta</a>
 				</div>
 			</div>
-				<div class="row">
-					<iframe src="https://docs.google.com/forms/d/e/1FAIpQLSdg30ssvqZsODPx0g3tce_eCyvBoUUYZgMwePAoNnFU3HWOqQ/viewform?embedded=true" width="100%" height="600px" frameborder="0" marginheight="0" marginwidth="0">Carregando…</iframe>
-				</div>
+			<div class="row">
+				<iframe src="https://docs.google.com/forms/d/e/1FAIpQLSdg30ssvqZsODPx0g3tce_eCyvBoUUYZgMwePAoNnFU3HWOqQ/viewform?embedded=true" width="100%" height="600px" frameborder="0" marginheight="0" marginwidth="0">Carregando…</iframe>
 			</div>
 		</div>
+	</div>
 
-		<script>
-
-
-            function main_map_init (map, options) {
-
-                var coords = [[-2.53342,-44.28391,10],[-2.5335509,-44.28449,12],]
+	<script>
 
 
-                var startIcon = L.icon({
-                    iconUrl: "{%  static "images/marker-icon-green.png" %}",
-                    iconRetinaUrl: "{% static "images/marker-icon-2x-green.png" %}",
-                    shadowUrl: "/static/leaflet/images/marker-shadow.png",
-                    iconSize: [25, 41],
-                    iconAnchor: [12, 41],
-                    popupAnchor: [1, -34],
-                    tooltipAnchor: [16, -28],
-                    shadowSize: [41, 41]
-                });
+        function main_map_init (map, options) {
+
+            var coords = [[-2.53342,-44.28391,10],[-2.5335509,-44.28449,12],]
 
 
-                var endIcon = L.icon({
-                    iconUrl: "{%  static "images/marker-icon-red.png" %}",
-                    iconRetinaUrl: "{% static "images/marker-icon-2x-red.png" %}",
-                    shadowUrl: "/static/leaflet/images/marker-shadow.png",
-                    iconSize: [25, 41],
-                    iconAnchor: [12, 41],
-                    popupAnchor: [1, -34],
-                    tooltipAnchor: [16, -28],
-                    shadowSize: [41, 41]
-                });
+            var startIcon = L.icon({
+                iconUrl: "{%  static "images/marker-icon-green.png" %}",
+                iconRetinaUrl: "{% static "images/marker-icon-2x-green.png" %}",
+                shadowUrl: "/static/leaflet/images/marker-shadow.png",
+                iconSize: [25, 41],
+                iconAnchor: [12, 41],
+                popupAnchor: [1, -34],
+                tooltipAnchor: [16, -28],
+                shadowSize: [41, 41]
+            });
 
-                startpoint = new L.Marker({{ start }}, {icon: startIcon});
-                map.addLayer(startpoint);
 
-                endpoint = new L.Marker({{ end }}, {icon: endIcon});
-                map.addLayer(endpoint);
+            var endIcon = L.icon({
+                iconUrl: "{%  static "images/marker-icon-red.png" %}",
+                iconRetinaUrl: "{% static "images/marker-icon-2x-red.png" %}",
+                shadowUrl: "/static/leaflet/images/marker-shadow.png",
+                iconSize: [25, 41],
+                iconAnchor: [12, 41],
+                popupAnchor: [1, -34],
+                tooltipAnchor: [16, -28],
+                shadowSize: [41, 41]
+            });
 
-                map.setView([-2.53214, -44.29627], 13);
-                map.setMaxBounds([[-2.35658930805591, -43.810043334960945],[-2.829888161145772, -44.68826293945313]])
-                L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
+            startpoint = new L.Marker({{ start }}, {icon: startIcon});
+            map.addLayer(startpoint);
 
-                var hotlineLayer = L.hotline(coords, {
-                    min: 0,
-                    max: 15,
-                    palette: {
-                        0.0: '#008800',
-                        0.5: '#ffff00',
-                        1.0: '#ff0000'
-                    },
-                    weight: 5,
-                    outlineColor: '#000000',
-                    outlineWidth: 1,
-                }).addTo(map);
-                map.fitBounds(hotlineLayer.getBounds(), { maxZoom: 18 });
-            }
+            endpoint = new L.Marker({{ end }}, {icon: endIcon});
+            map.addLayer(endpoint);
 
-		</script>
+            map.setView([-2.53214, -44.29627], 13);
+            map.setMaxBounds([[-2.35658930805591, -43.810043334960945],[-2.829888161145772, -44.68826293945313]])
+            L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
+
+            var hotlineLayer = L.hotline(coords, {
+                min: 0,
+                max: 15,
+                palette: {
+                    0.0: '#008800',
+                    0.5: '#ffff00',
+                    1.0: '#ff0000'
+                },
+                weight: 5,
+                outlineColor: '#000000',
+                outlineWidth: 1,
+            }).addTo(map);
+            map.fitBounds(hotlineLayer.getBounds(), { maxZoom: 18 });
+        }
+
+	</script>
 </body>
 </html>

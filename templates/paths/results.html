@@ -1,10 +1,10 @@
-{% load static %}
 {% load leaflet_tags %}
+{% load static %}
+<!DOCTYPE html>
 <html>
 <head>
-
-  <link rel="shortcut icon" type="image/png"
-          href="{% static 'images/favicon.png' %}"/>
+	<link rel="shortcut icon" type="image/png"
+	      href="{% static 'images/favicon.png' %}"/>
 	<title>NeoMaps</title>
 
 	<meta charset="utf-8">
@@ -14,9 +14,12 @@
 	<script src="{% static "js/jquery.min.js" %}"></script>
 	<script src="{% static "js/bootstrap.min.js" %}"></script>
 
+
+	<link rel="stylesheet" href="{% static "css/leaflet.zoomdisplay.css" %}">
 	{% leaflet_js %}
 	{% leaflet_css %}
 	<script src="{% static "js/leaflet.hotline.js" %}"></script>
+	<script src="{% static "js/leaflet.zoomdisplay.js" %}"></script>
 	<style>
 
 		.leaflet-container {  /* all maps */
@@ -34,9 +37,9 @@
 <body>
 <div class="container-fluid" style="margin-top: 10px">
 	<div class="row">
-		 <div class="col-md-7 col-sm-7">
-	<img src="{%  static "images/neomaps.png" %}" style="width:300px"/>
-		 </div>
+		<div class="col-md-7 col-sm-7">
+			<img src="{%  static "images/neomaps.png" %}" style="width:300px"/>
+		</div>
 		<div class="col-md-5 col-sm-5" style="text-align: right;"><h1>
 			<img src="{%  static "images/python-powered-w-200x80.png" %}" style="width:100px"/>
 			<img src="{%  static "images/django_logo.png" %}" style="width:100px"/>
@@ -58,6 +61,9 @@
 				<div class="col-md-5" s>
 					<a  class="btn btn-primary" href="/" role="button">Nova Consulta</a>
 				</div>
+			</div>
+			<div class="row">
+				<h1 style="height: 600px;"> </h1>
 			</div>
 		</div>
 	</div>
