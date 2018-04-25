@@ -4,8 +4,10 @@ from paths.utilpaths import getRelWay
 import time, os
 from datetime import datetime
 from neomodel import db
+import logging
 # Create your views here.
 from paths.models import Point, WayRel, Metric, DateNode
+
 
 def index(request):
     context = {}
@@ -68,12 +70,10 @@ def results(request):
 
         ditancia = float(path[0][1])
 
-        print(max)
-
         if ditancia > 1:
-            meta = "{0:.2f}Km".format(ditancia)
+            meta = "Distância: {0:.2f}Km".format(ditancia)
         else:
-            meta = "{0:.0f}m".format(ditancia*1000)
+            meta = "Distância: {0:.0f}m".format(ditancia*1000)
 
 
         context = { 'startOSM': startOSM[0], 'endOSM': endOSM[0], 'polyline' : hotline, 'maxGrade': max[0][0], 'meta' : meta,
@@ -91,6 +91,9 @@ def results(request):
         metricRel = metric.mensured.connect(mensured)
         db.commit()
     except Exception as e:
+        logger = logging.getLogger('testes')
+        logger.debug("{0}:{1}".format(time.strftime("%H:%M:%S"), e))
+
         db.rollback()
         db.begin()
 	
@@ -104,6 +107,6 @@ def results(request):
         metric.save()
 
         metricRel = metric.mensured.connect(mensured)
-        db.commit()        
+        db.commit()
         context = {'meta': 'Não foi possível calcular sua rota.'}
     return render(request, 'paths/results.html', context)

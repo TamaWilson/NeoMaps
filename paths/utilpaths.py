@@ -3,21 +3,21 @@ from bs4 import BeautifulSoup
 import json
 import re
 from neomodel import db
-
+import time
 import logging
 
 # Get an instance of a logger
-logger = logging.getLogger('tama')
+logger = logging.getLogger('testes')
 def getRelWay(tempPoint):
-    print(tempPoint)
+    logger.debug("{0}:{1}".format(time.strftime("%H:%M:%S"), tempPoint))
     try:
         url = "https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat={0}&lon={1}&zoom=16".format(tempPoint[0], tempPoint[1])
         req =  Request(url)
-        print(url)
+        logger.debug("{0}:{1}".format(time.strftime("%H:%M:%S"), url))
         req.headers['User-Agent'] = 'OSMPythonTools/0.1.8 (https://github.com/mocnik-science/osm-python-tools)'
 
         rawResponse = urlopen(req)
-        print(rawResponse)
+
         tempWay = json.loads(rawResponse.read().decode("utf-8"))
 
         if tempWay['osm_type'] != 'way':
@@ -42,10 +42,9 @@ def getRelWay(tempPoint):
         pointOSM, meta = db.cypher_query(query)
 
         if len(pointOSM) == 0:
-            raise Exception("{0}".format(pointOSM))
+            raise Exception("PointOSM: {0}".format(pointOSM))
     except Exception as e:
-        logger.debug(e)
-        logger.debug('teste')
+        logger.debug("{0}:{1}".format(time.strftime("%H:%M:%S"), e))
         query = '''WITH {0} AS lat, {1} AS lon, 
                            point({{ longitude: {1}, latitude: {0} }}) AS tempPoint 
                            MATCH (l:Point)-[r:Way]->()
