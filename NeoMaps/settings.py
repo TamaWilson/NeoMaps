@@ -26,7 +26,7 @@ SECRET_KEY = 'j@_xiwaeyhgt)x27m#*_*mbqyn1x=4%m#!^tgud=rs4m#z$!nt'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -104,9 +104,9 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/2.0/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'pt_BR'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'America/Belem'
 
 USE_I18N = True
 
@@ -120,18 +120,52 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-STATIC_ROOT = os.path.join(BASE_DIR, '../static')
+STATIC_ROOT = os.path.join(BASE_DIR, 'statics')
 
 STATICFILES_DIRS = (
-               os.path.join(BASE_DIR,'static'), # if your static files folder is named "staticfiles"
+                os.path.join(BASE_DIR,'static'), # if your static files folder is named "staticfiles"
 )
 
-config.DATABASE_URL = 'bolt://neo4j:neo4@localhost:7687'  # default
-
+#config.DATABASE_URL = 'bolt://neo4j:neo4@localhost:7687'  # default
+#
+#
 config.ENCRYPTED_CONNECTION = False
 
 LEAFLET_CONFIG = {
     'RESET_VIEW': False,
     'DEFAULT_ZOOM': 15,
     'MIN_ZOOM': 11,
+}
+
+
+os.environ['NEOMODEL_CYPHER_DEBUG'] = '1'
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'file': {
+            'level': 'DEBUG',
+            'class': 'logging.FileHandler',
+            'filename': '../logs/debug.log',
+        },
+        'tama': {
+            'level': 'DEBUG',
+            'class': 'logging.FileHandler',
+            'filename': '../logs/tama.log',
+        }
+    },
+    'loggers': {
+        # default for all undefined Python modules
+        'neomodel': {
+            'handlers': ['file'],
+            'level': 'DEBUG',
+            'propagate': True,
+        },
+        'testes': {
+            'handlers': ['tama'],
+            'level': 'DEBUG',
+            'propagate': True,
+        }
+    }
 }

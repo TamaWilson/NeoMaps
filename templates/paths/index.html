@@ -5,6 +5,13 @@
 	<link rel="shortcut icon" type="image/png"
 	      href="{% static 'images/favicon.png' %}"/>
 	<title>NeoMaps</title>
+	<meta name="description" content="Sistema de recomendação de rotas Baseado em Banco de dados orientado à grafos">
+	<meta property="og:title" content="NeoMaps" />
+	<meta property="og:url" content="http://neomaps.me" />
+	<meta property="og:description" content="Sistema de recomendação de rotas Baseado em Banco de dados orientado à grafos">
+	<meta property="og:image" content="http://neomaps.me/static/images/neo_f.png">
+<meta property="og:locale" content="pt_BR" />
+
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
@@ -39,41 +46,51 @@
 <div class="container-fluid" style="margin-top: 10px">
 	<div class="row">
 		<div class="col-md-7 col-sm-7">
-			<img src="{%  static "images/neomaps.png" %}" style="width:300px"/>
+			<img src="{%  static "images/neomaps.png" %}" class="d-none d-lg-block" style="width:300px"/>
+			<img src="{%  static "images/neomaps.png" %}" class="d-block d-lg-none" style="width:125px"/>
 		</div>
-		<div class="col-md-5 col-sm-5" style="text-align: right;"><h1>
+		<div class="col-md-5 col-sm-5 d-none d-lg-block" style="text-align: right;">
+			<h1>
+				<img src="{%  static "images/python-powered-w-200x80.png" %}" style="width:100px"/>
+				<img src="{%  static "images/django_logo.png" %}" style="width:100px"/>
+				<img src="{%  static "images/neo4j_logo.png" %}" style="width:100px"/>
+			</h1>
+		</div>
+	</div>
+</div>
+<hr/>
+
+<div class="row">
+	<div class="col-md-9">
+		{% leaflet_map "mapid" callback="main_map_init" %}
+	</div>
+	<div class="col-md-3">
+		<h2>Instruções</h2>
+		<ol>
+			<li>Pense em uma rota que você está acostumado a fazer</li>
+			<li>Clique no local onde quer iniciar a rota</li>
+			<li>Selecione "Iniciar aqui!"</li>
+			<li>Clique no local de destino da rota</li>
+			<li>Selecione "Chegar aqui"</li>
+			<li>Clique no botão Calcular Rota para obter o trajeto</li>
+		</ol>
+		<br>
+		<form method='POST' class='text-center' id='routing' action={% url 'voyage:results' %}>
+			{% csrf_token %}
+			<input type='hidden' id='start' name="startpoint" value=""/>
+			<input type='hidden' id='end' name="endpoint" value=""/>
+			<input class="btn btn-primary btn-lg rotas"  type='submit' role="button" value='Calcular rota' data-toggle="modal" data-target="#loadmodal"/>
+		</form>
+		<div style="text-align: center; color: red; font-weight: bold;"> {{ ex }}</div>
+
+		<div class="row d-block d-lg-none text-center" >
 			<img src="{%  static "images/python-powered-w-200x80.png" %}" style="width:100px"/>
 			<img src="{%  static "images/django_logo.png" %}" style="width:100px"/>
 			<img src="{%  static "images/neo4j_logo.png" %}" style="width:100px"/>
-		</h1>
 		</div>
-	</div>
-	<hr/>
 
-	<div class="row">
-		<div class="col-md-9">
-			{% leaflet_map "mapid" callback="main_map_init" %}
-		</div>
-		<div class="col-md-3">
-			<h2>Instruções</h2>
-			<ol>
-				<li>Pense em uma rota que você está acostumado a fazer</li>
-				<li>Clique no local onde quer iniciar a rota</li>
-				<li>Selecione "Iniciar aqui!"</li>
-				<li>Clique no local de destino da rota</li>
-				<li>Selecione "Chegar aqui"</li>
-				<li>Clique no botão Calcular Rota para obter o trajeto</li>
-			</ol>
-			<br>
-			<form method='POST' class='text-center' id='routing' action={% url 'voyage:results' %}>
-				{% csrf_token %}
-				<input type='hidden' id='start' name="startpoint" value=""/>
-				<input type='hidden' id='end' name="endpoint" value=""/>
-				<input class="btn btn-primary btn-lg rotas"  type='submit' value='Calcular rota'/>
-			</form>
-			<div style="text-align: center; color: red; font-weight: bold;">{{ ex }}</div>
-		</div>
 	</div>
+</div>
 </div>
 
 <div class="modal fade" id="loadmodal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true" data-backdrop="static" data-keyboard="false">
@@ -187,12 +204,12 @@
         console.log(point)
         $('#' + type).val(point);
     }
-
-    document.getElementsByClassName("rotas")[0].addEventListener("click", capture);
-    function capture()  {
-        $('#loadmodal').modal('show').
-        document.getElementById("routing").submit();
-    }
+    /*
+        document.getElementsByClassName("rotas")[0].addEventListener("click", capture);
+        function capture()  {
+            $('#loadmodal').modal('show').
+            document.getElementById("routing").submit();
+        } */
 
 </script>
 </body>

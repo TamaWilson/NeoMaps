@@ -60,3 +60,4 @@ paths/__pycache__/__init__.cpython-35.pyc
 paths/migrations/__pycache__/__init__.cpython-35.pyc
 *.pyc
 paths/importer.py
+.idea/webResources.xml

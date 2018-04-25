@@ -4,7 +4,10 @@ import json
 import re
 from neomodel import db
 
+import logging
 
+# Get an instance of a logger
+logger = logging.getLogger('tama')
 def getRelWay(tempPoint):
     print(tempPoint)
     try:
@@ -14,7 +17,7 @@ def getRelWay(tempPoint):
         req.headers['User-Agent'] = 'OSMPythonTools/0.1.8 (https://github.com/mocnik-science/osm-python-tools)'
 
         rawResponse = urlopen(req)
-
+        print(rawResponse)
         tempWay = json.loads(rawResponse.read().decode("utf-8"))
 
         if tempWay['osm_type'] != 'way':
@@ -36,7 +39,13 @@ def getRelWay(tempPoint):
                    RETURN l.osmID, MIN(DISTANCE(tempPoint,point({{longitude: l.lon, latitude: l.lat}}))) as dis
                    order by dis asc limit 1'''.format(tempPoint[0],tempPoint[1],osmID)
         otimized = True
-    except:
+        pointOSM, meta = db.cypher_query(query)
+
+        if len(pointOSM) == 0:
+            raise Exception("{0}".format(pointOSM))
+    except Exception as e:
+        logger.debug(e)
+        logger.debug('teste')
         query = '''WITH {0} AS lat, {1} AS lon, 
                            point({{ longitude: {1}, latitude: {0} }}) AS tempPoint 
                            MATCH (l:Point)-[r:Way]->()
@@ -45,8 +54,6 @@ def getRelWay(tempPoint):
                            RETURN l.osmID, MIN(DISTANCE(tempPoint,point({{longitude: l.lon, latitude: l.lat}}))) as dis
                            order by dis asc limit 1'''.format(tempPoint[0], tempPoint[1])
         otimized = False
-
-    pointOSM, meta = db.cypher_query(query)
-
+        pointOSM, meta = db.cypher_query(query)
     pointOSM[0].append(otimized)
     return pointOSM

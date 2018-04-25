@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from paths.utilpaths import getRelWay
-import time
+import time, os
 from datetime import datetime
 from neomodel import db
 # Create your views here.
@@ -20,15 +20,15 @@ def teste(request):
 
 
 def results(request):
+    
     if not request.POST['startpoint'].strip() or not request.POST['endpoint'].strip():
         messages.add_message(request, messages.INFO, "Informe a origem e o destino da rota!")
         return redirect('/')
     db.begin()
+    start_time = time.time()
+    start = [float(x) for x in request.POST['startpoint'].replace("LatLng(", "").replace(")", "").split(',')]
+    end = [float(x) for x in request.POST['endpoint'].replace("LatLng(", "").replace(")", "").split(',')]
     try:
-        start_time = time.time()
-
-        start = [float(x) for x in request.POST['startpoint'].replace("LatLng(", "").replace(")", "").split(',')]
-        end = [float(x) for x in request.POST['endpoint'].replace("LatLng(", "").replace(")", "").split(',')]
 
         #time.sleep(1)
         startOSM = getRelWay(start)
@@ -65,7 +65,11 @@ def results(request):
         hotline += '[{0},{1},0]'.format(end[0], end[1])
 
 
+
         ditancia = float(path[0][1])
+
+        print(max)
+
         if ditancia > 1:
             meta = "{0:.2f}Km".format(ditancia)
         else:
@@ -81,13 +85,25 @@ def results(request):
         mensuredTemp = DateNode.create_or_update({'date': dataConvertida})
         mensured = mensuredTemp[0]
 
-        metric = Metric(startPoint=start, endPoint=end, startId=startOSM[0][0], endId=endOSM[0][0], otimized=startOSM[0][1], metric=processTime, hour=time.strftime("%H:%M:%S") )
+        metric = Metric(startPoint=start, endPoint=end, startId=startOSM[0][0], endId=endOSM[0][0], otimizedStart=startOSM[0][2],  otimizedEnd=endOSM[0][2], metric=processTime, hour=time.strftime("%H:%M:%S") )
         metric.save()
 
         metricRel = metric.mensured.connect(mensured)
-
         db.commit()
     except Exception as e:
         db.rollback()
-        context = {'meta': e}
+        db.begin()
+	
+        processTime = round(time.time() - start_time, 2)
+        dataConvertida = int(datetime.now().date().strftime('%Y%m%d'))
+
+        mensuredTemp = DateNode.create_or_update({'date': dataConvertida})
+        mensured = mensuredTemp[0]
+
+        metric = Metric(startPoint=start, endPoint=end, status=e, metric=processTime, hour=time.strftime("%H:%M:%S"))
+        metric.save()
+
+        metricRel = metric.mensured.connect(mensured)
+        db.commit()        
+        context = {'meta': 'Não foi possível calcular sua rota.'}
     return render(request, 'paths/results.html', context)
